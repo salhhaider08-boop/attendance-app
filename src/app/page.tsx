@@ -1,20 +1,16 @@
+export const dynamic = 'force-dynamic';
 import { prisma } from "@/lib/prisma"
 import { addBulkAttendance } from "./actions"
 import AttendanceTable from "./components/AttendanceTable"
 import ExportButton from "./components/ExportButton"
-
 import { calculateMonthSalary } from "@/lib/payrollCalculator"
-
 export default async function Home(props: { searchParams: Promise<{ employeeId?: string, month?: string }> }) {
   const searchParams = await props.searchParams;
-  
   const employees = await prisma.employee.findMany({
     orderBy: { name: 'asc' }
   });
-
   const filterEmployeeId = searchParams.employeeId ? parseInt(searchParams.employeeId) : undefined;
   const filterMonthStr = searchParams.month;
-
   let whereClause: any = {};
   if (filterEmployeeId) {
     whereClause.employeeId = filterEmployeeId;
@@ -29,12 +25,10 @@ export default async function Home(props: { searchParams: Promise<{ employeeId?:
       lte: endDate
     };
   }
-
   const records = await prisma.attendance.findMany({
     where: whereClause,
     orderBy: { date: 'desc' }
   });
-
   // Calculate total salaries for the filtered view
   let totalSalariesCalculated = 0;
   if (filterMonthStr) {
@@ -42,20 +36,17 @@ export default async function Home(props: { searchParams: Promise<{ employeeId?:
     const targetEmployees = filterEmployeeId 
       ? employees.filter(e => e.id === filterEmployeeId) 
       : employees;
-      
     for (const emp of targetEmployees) {
        const calc = await calculateMonthSalary(emp, year, month);
        totalSalariesCalculated += calc.finalSalary;
     }
   }
-
   return (
     <main className="container">
       <div className="header">
         <h1>نظام الحضور والانصراف</h1>
         <p>إدارة ساعات العمل الإضافية والرسمية بشكل مجمع</p>
       </div>
-
       <div className="grid">
         {/* Form Section */}
         <div className="glass-card">
@@ -70,22 +61,18 @@ export default async function Home(props: { searchParams: Promise<{ employeeId?:
                 ))}
               </select>
             </div>
-
             <div className="form-group">
               <label htmlFor="startDate">من تاريخ</label>
               <input type="date" id="startDate" name="startDate" className="form-control" required />
             </div>
-
             <div className="form-group">
               <label htmlFor="endDate">إلى تاريخ</label>
               <input type="date" id="endDate" name="endDate" className="form-control" required />
             </div>
-
             <div className="form-group" style={{ flexDirection: 'row', alignItems: 'center', gap: '0.5rem', marginTop: '1rem', marginBottom: '1.5rem' }}>
               <input type="checkbox" id="skipFridays" name="skipFridays" style={{ width: '20px', height: '20px' }} defaultChecked />
               <label htmlFor="skipFridays" style={{ margin: 0, cursor: 'pointer' }}>بدون جمعة (استثناء أيام الجمعة تلقائياً)</label>
             </div>
-
             <button type="submit" className="btn btn-primary" disabled={employees.length === 0}>
               <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -95,12 +82,10 @@ export default async function Home(props: { searchParams: Promise<{ employeeId?:
             {employees.length === 0 && <p style={{color:'var(--danger)', marginTop:'1rem', fontSize:'0.9rem'}}>يجب إضافة موظفين أولاً من صفحة الموظفين</p>}
           </form>
         </div>
-
         {/* Table Section */}
         <div className="glass-card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
             <h2>سجل الحضور</h2>
-            
             <form method="GET" action="/" style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '8px' }}>
               <select name="employeeId" className="form-control" style={{ width: 'auto', padding: '0.5rem' }} defaultValue={filterEmployeeId || ""}>
                 <option value="">كل الموظفين</option>
@@ -114,10 +99,8 @@ export default async function Home(props: { searchParams: Promise<{ employeeId?:
                 <a href="/" className="btn" style={{ padding: '0.5rem 1rem', background: 'rgba(255,255,255,0.1)' }}>إلغاء الفلتر</a>
               )}
             </form>
-
             <ExportButton />
           </div>
-
           {filterMonthStr && (
             <div style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(52, 211, 153, 0.1))', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '1.5rem', borderRadius: '12px', marginBottom: '1.5rem', textAlign: 'center' }}>
               <p style={{ color: 'var(--text-muted)', marginBottom: '0.5rem', fontSize: '1.1rem' }}>
@@ -128,7 +111,6 @@ export default async function Home(props: { searchParams: Promise<{ employeeId?:
               </h3>
             </div>
           )}
-
           <AttendanceTable records={records} />
         </div>
       </div>
