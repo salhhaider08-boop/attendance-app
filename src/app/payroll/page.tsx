@@ -189,7 +189,7 @@ export default async function PayrollPage(props: { searchParams: Promise<{ emplo
       </div>
 
       {isAllEmployees && bulkPayrollDataList && (
-        <MonthlyPayrollReport payrollDataList={bulkPayrollDataList} monthStr={monthStr} />
+        <MonthlyPayrollReport payrollDataList={bulkPayrollDataList} monthStr={monthStr || ""} />
       )}
     </main>
   );
