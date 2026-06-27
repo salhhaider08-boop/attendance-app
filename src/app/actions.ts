@@ -213,6 +213,9 @@ export async function markSalaryPaid(formData: FormData) {
       isPaid: true
     }
   });
+  revalidatePath("/payroll");
+}
+
 export async function saveAdvance(formData: FormData) {
   const employeeId = parseInt(formData.get("employeeId") as string);
   const month = formData.get("month") as string;
