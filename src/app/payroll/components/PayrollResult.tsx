@@ -150,36 +150,74 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
           }
           .print-container, .print-container * {
             visibility: visible;
-            color: black !important;
           }
           .print-container {
             position: absolute;
             left: 0;
             top: 0;
             width: 100%;
-            padding: 40px;
+            padding: 30px 40px;
             direction: rtl;
-            background: white;
-            font-family: sans-serif;
+            background: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
           .print-header {
             text-align: center;
-            font-size: 28px;
-            font-weight: bold;
+            font-size: 32px;
+            font-weight: 800;
+            color: #1e293b;
             margin-bottom: 30px;
-            border-bottom: 2px solid black;
-            padding-bottom: 10px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3b82f6;
           }
           .print-row {
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px dashed #999;
-            padding: 12px 0;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 14px 10px;
             font-size: 18px;
+            color: #334155;
           }
           .print-bold {
-            font-weight: bold;
+            font-weight: 700;
             font-size: 20px;
+            color: #0f172a;
+          }
+          .print-salary-box {
+            background: linear-gradient(135deg, rgba(239, 246, 255, 0.9), rgba(219, 234, 254, 0.8));
+            border: 1px solid rgba(147, 197, 253, 0.5);
+            border-radius: 16px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.15), 0 8px 10px -6px rgba(37, 99, 235, 0.1);
+          }
+          .print-salary-title {
+            font-size: 20px;
+            color: #475569;
+            margin-bottom: 10px;
+            font-weight: 700;
+          }
+          .print-salary-amount {
+            font-size: 46px;
+            font-weight: 900;
+            color: #1d4ed8;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin: 0;
+          }
+          .print-dues {
+            background: rgba(254, 226, 226, 0.8);
+            border: 1px solid rgba(252, 165, 165, 0.8);
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-top: 15px;
+            display: inline-block;
+            color: #b91c1c;
+            font-weight: bold;
+            font-size: 18px;
           }
         }
         @media screen {
@@ -192,46 +230,44 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
       <div className="print-container">
         <div className="print-header">تقرير راتب موظف</div>
         
-        <div className="print-row print-bold">
-          <span>الاسم: {payrollData.employeeName}</span>
-          <span>التاريخ (الشهر): {payrollData.monthStr}</span>
+        <div className="print-row print-bold" style={{ borderBottom: 'none' }}>
+          <span>الاسم: <span style={{ color: '#2563eb' }}>{payrollData.employeeName}</span></span>
+          <span>تاريخ الراتب: <span style={{ color: '#2563eb' }}>{payrollData.monthStr}</span></span>
         </div>
         
-        <div className="print-row print-bold" style={{ backgroundColor: '#f0f0f0', padding: '15px 5px', border: '2px solid black', margin: '20px 0' }}>
-          <span>الراتب الكلي المستحق:</span>
-          <span>{payrollData.finalSalary.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</span>
+        <div className="print-salary-box">
+          <div className="print-salary-title">الراتب الكلي المستحق</div>
+          <div className="print-salary-amount">{payrollData.finalSalary.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</div>
+          {payrollData.previousDues > 0 && (
+            <div className="print-dues">
+              + ديون سابقة للأشهر ({payrollData.unpaidMonthsList.join(' , ')}): {payrollData.previousDues.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع
+            </div>
+          )}
         </div>
-
-        {payrollData.previousDues > 0 && (
-          <div className="print-row">
-            <span>مبلغ استحقاق الأشهر السابقة ({payrollData.unpaidMonthsList.join(' , ')}):</span>
-            <span>{payrollData.previousDues.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</span>
-          </div>
-        )}
 
         <div className="print-row">
           <span>النقل والطعام:</span>
-          <span>{payrollData.allowanceEarned.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</span>
+          <span className="print-bold">{payrollData.allowanceEarned.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</span>
         </div>
         
         <div className="print-row">
           <span>الساعات الإضافية والجمعة:</span>
-          <span>{(payrollData.overtimePay + payrollData.fridayPay).toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</span>
+          <span className="print-bold">{(payrollData.overtimePay + payrollData.fridayPay).toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</span>
         </div>
 
         <div className="print-row">
           <span>سعر الساعة العادية:</span>
-          <span>{payrollData.hourlyRate.toLocaleString(undefined, {maximumFractionDigits: 2})} د.ع</span>
+          <span className="print-bold">{payrollData.hourlyRate.toLocaleString(undefined, {maximumFractionDigits: 2})} د.ع</span>
         </div>
 
         <div className="print-row">
           <span>عدد الساعات العادية:</span>
-          <span>{payrollData.totalOfficialHours} ساعة</span>
+          <span className="print-bold">{payrollData.totalOfficialHours.toLocaleString(undefined, {maximumFractionDigits: 1})} ساعة</span>
         </div>
 
-        <div className="print-row">
+        <div className="print-row" style={{ borderBottom: 'none' }}>
           <span>عدد الساعات الإضافية والجمعة:</span>
-          <span>{payrollData.totalOvertimeHours + payrollData.totalFridayHours} ساعة</span>
+          <span className="print-bold">{(payrollData.totalOvertimeHours + payrollData.totalFridayHours).toLocaleString(undefined, {maximumFractionDigits: 1})} ساعة</span>
         </div>
       </div>
     </div>
