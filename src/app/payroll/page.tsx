@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma"
 import { calculateMonthSalary } from "@/lib/payrollCalculator"
 import PayrollResult from "./components/PayrollResult"
 
-export default async function PayrollPage(props: { searchParams: Promise<{ employeeId?: string, month?: string }> }) {
+export default async function PayrollPage(props: { searchParams: Promise<{ employeeId?: string, month?: string, advances?: string }> }) {
   const searchParams = await props.searchParams;
   const employees = await prisma.employee.findMany();
 
