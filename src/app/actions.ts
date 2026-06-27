@@ -4,36 +4,35 @@ import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
 function calculateHours(checkIn: Date, checkOut: Date) {
-  // Use UTC to represent 9 AM and 6 PM in Iraq (+03:00) 
-  // 9 AM Iraq time = 6 AM UTC
-  // 6 PM Iraq time = 3 PM UTC
-  const officialStart = new Date(checkIn);
-  officialStart.setUTCHours(6, 0, 0, 0);
+  const iraqCheckIn = new Date(checkIn.getTime() + 3 * 60 * 60 * 1000);
+  
+  const officialStart = new Date(Date.UTC(
+    iraqCheckIn.getUTCFullYear(),
+    iraqCheckIn.getUTCMonth(),
+    iraqCheckIn.getUTCDate(),
+    6, 0, 0, 0 // 9 AM Iraq time = 6 AM UTC
+  ));
 
-  const officialEnd = new Date(checkIn);
-  officialEnd.setUTCHours(15, 0, 0, 0);
+  const officialEnd = new Date(Date.UTC(
+    iraqCheckIn.getUTCFullYear(),
+    iraqCheckIn.getUTCMonth(),
+    iraqCheckIn.getUTCDate(),
+    15, 0, 0, 0 // 6 PM Iraq time = 15:00 UTC
+  ));
 
   let officialMs = 0;
   let overtimeMs = 0;
 
-  const actualStartMs = checkIn.getTime();
-  const actualEndMs = checkOut.getTime();
-  const offStartMs = officialStart.getTime();
-  const offEndMs = officialEnd.getTime();
+  if (checkOut) {
+    const actualStart = checkIn < officialStart ? officialStart : checkIn;
+    const actualEnd = checkOut > officialEnd ? officialEnd : checkOut;
 
-  if (actualStartMs < offStartMs) {
-    overtimeMs += (Math.min(actualEndMs, offStartMs) - actualStartMs);
-  }
+    if (actualEnd > actualStart) {
+      officialMs = actualEnd.getTime() - actualStart.getTime();
+    }
 
-  if (actualEndMs > offEndMs) {
-    overtimeMs += (actualEndMs - Math.max(actualStartMs, offEndMs));
-  }
-
-  const overlapStart = Math.max(actualStartMs, offStartMs);
-  const overlapEnd = Math.min(actualEndMs, offEndMs);
-
-  if (overlapEnd > overlapStart) {
-    officialMs = overlapEnd - overlapStart;
+    const totalMs = checkOut.getTime() - checkIn.getTime();
+    overtimeMs = totalMs > officialMs ? totalMs - officialMs : 0;
   }
 
   const officialHours = officialMs / (1000 * 60 * 60);
