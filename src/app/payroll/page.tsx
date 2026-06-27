@@ -95,7 +95,7 @@ export default async function PayrollPage(props: { searchParams: Promise<{ emplo
   const isAllEmployees = searchParams.employeeId === 'all';
   const employeeId = searchParams.employeeId && !isAllEmployees ? parseInt(searchParams.employeeId) : null;
   const monthStr = searchParams.month; // format "YYYY-MM"
-  const urlAdvances = searchParams.advances !== undefined ? parseFloat(searchParams.advances) : undefined;
+  const urlAdvances = searchParams.advances ? parseFloat(searchParams.advances) : undefined;
   let payrollData = null;
   let bulkPayrollDataList = null;
   if (monthStr) {
