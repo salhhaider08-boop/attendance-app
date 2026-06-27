@@ -39,6 +39,7 @@ model SalaryStatus {
   employeeId Int
   month      String   // format "YYYY-MM"
   isPaid     Boolean  @default(false)
+  advances   Float    @default(0)
   createdAt  DateTime @default(now())
 
   @@unique([employeeId, month])

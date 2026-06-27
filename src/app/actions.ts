@@ -213,6 +213,31 @@ export async function markSalaryPaid(formData: FormData) {
       isPaid: true
     }
   });
+export async function saveAdvance(formData: FormData) {
+  const employeeId = parseInt(formData.get("employeeId") as string);
+  const month = formData.get("month") as string;
+  const advances = parseFloat(formData.get("advances") as string);
+
+  if (!employeeId || !month || isNaN(advances)) {
+    throw new Error("بيانات غير مكتملة");
+  }
+
+  await prisma.salaryStatus.upsert({
+    where: {
+      employeeId_month: {
+        employeeId,
+        month
+      }
+    },
+    update: {
+      advances
+    },
+    create: {
+      employeeId,
+      month,
+      advances
+    }
+  });
 
   revalidatePath("/payroll");
 }

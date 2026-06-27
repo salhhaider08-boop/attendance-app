@@ -46,9 +46,8 @@ export default function MonthlyPayrollReport({ payrollDataList, monthStr }: { pa
               <td style={{ color: data.previousDues > 0 ? 'var(--danger)' : 'var(--text-muted)' }}>
                 {data.previousDues > 0 ? `+ ${data.previousDues.toLocaleString()}` : '-'}
               </td>
-              <td style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>
-                {/* Empty column for manual entry in print */}
-                -
+              <td style={{ color: data.advances > 0 ? 'var(--danger)' : 'var(--text-muted)' }}>
+                {data.advances > 0 ? `- ${data.advances.toLocaleString()}` : '-'}
               </td>
               <td style={{ fontWeight: 'bold', color: 'var(--primary)', fontSize: '1.1rem' }}>
                 {data.finalSalary.toLocaleString()} د.ع

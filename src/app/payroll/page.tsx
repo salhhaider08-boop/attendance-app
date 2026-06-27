@@ -4,7 +4,7 @@ import PayrollResult from "./components/PayrollResult"
 
 import MonthlyPayrollReport from "./components/MonthlyPayrollReport"
 
-async function getPayrollData(employee: any, year: number, month: number, monthStr: string, advances: number = 0) {
+async function getPayrollData(employee: any, year: number, month: number, monthStr: string, advancesOverride?: number) {
   const {
     nonFridayDaysInMonth,
     hourlyRate,
@@ -26,6 +26,9 @@ async function getPayrollData(employee: any, year: number, month: number, monthS
     where: { employeeId_month: { employeeId: employee.id, month: monthStr } }
   });
   const isPaid = currentStatus?.isPaid || false;
+  
+  // Use override if provided, otherwise fetch from DB
+  const advances = advancesOverride !== undefined ? advancesOverride : (currentStatus?.advances || 0);
 
   // Calculate previous dues (unpaid past months)
   let previousDues = 0;
@@ -107,7 +110,7 @@ export default async function PayrollPage(props: { searchParams: Promise<{ emplo
   const isAllEmployees = searchParams.employeeId === 'all';
   const employeeId = searchParams.employeeId && !isAllEmployees ? parseInt(searchParams.employeeId) : null;
   const monthStr = searchParams.month; // format "YYYY-MM"
-  const advances = searchParams.advances ? parseFloat(searchParams.advances) : 0;
+  const urlAdvances = searchParams.advances !== undefined ? parseFloat(searchParams.advances) : undefined;
 
   let payrollData = null;
   let bulkPayrollDataList = null;
@@ -118,14 +121,23 @@ export default async function PayrollPage(props: { searchParams: Promise<{ emplo
     if (isAllEmployees) {
       bulkPayrollDataList = [];
       for (const emp of employees) {
-        // We pass 0 advances for bulk report since advances are not persisted in DB
-        const data = await getPayrollData(emp, year, month, monthStr, 0);
+        // Pass undefined for override so it fetches from DB
+        const data = await getPayrollData(emp, year, month, monthStr, undefined);
         bulkPayrollDataList.push(data);
       }
     } else if (employeeId) {
+      // If URL has advances, save it to the DB first
+      if (urlAdvances !== undefined && !isNaN(urlAdvances)) {
+        await prisma.salaryStatus.upsert({
+          where: { employeeId_month: { employeeId, month: monthStr } },
+          update: { advances: urlAdvances },
+          create: { employeeId, month: monthStr, advances: urlAdvances }
+        });
+      }
+
       const employee = employees.find(e => e.id === employeeId);
       if (employee) {
-        payrollData = await getPayrollData(employee, year, month, monthStr, advances);
+        payrollData = await getPayrollData(employee, year, month, monthStr, urlAdvances);
       }
     }
   }
@@ -160,7 +172,7 @@ export default async function PayrollPage(props: { searchParams: Promise<{ emplo
             {!isAllEmployees && (
               <div className="form-group">
                 <label htmlFor="advances">السلف المسحوبة (إن وجدت)</label>
-                <input type="number" id="advances" name="advances" className="form-control" defaultValue={advances || ""} placeholder="أدخل مبلغ السلف (د.ع) - للتقرير الفردي فقط" />
+                <input type="number" id="advances" name="advances" className="form-control" defaultValue={urlAdvances !== undefined ? urlAdvances : (payrollData?.advances || "")} placeholder="أدخل مبلغ السلف (د.ع)" />
               </div>
             )}
 
