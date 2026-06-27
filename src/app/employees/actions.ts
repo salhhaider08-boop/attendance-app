@@ -9,15 +9,22 @@ export async function addEmployee(formData: FormData) {
   const allowance = parseFloat(formData.get("allowance") as string) || 100000;
 
   if (!name || isNaN(basicSalary)) {
-    throw new Error("الاسم والراتب الاسمي مطلوبان");
+    return { error: "الاسم والراتب الاسمي مطلوبان" };
   }
 
-  await prisma.employee.create({
-    data: { name, basicSalary, allowance }
-  });
+  try {
+    await prisma.employee.create({
+      data: { name, basicSalary, allowance }
+    });
 
-  revalidatePath("/employees");
-  revalidatePath("/");
+    revalidatePath("/employees");
+    revalidatePath("/");
+  } catch (error: any) {
+    if (error.code === 'P2002') {
+      return { error: "هذا الاسم موجود مسبقاً، الرجاء اختيار اسم آخر" };
+    }
+    return { error: "حدث خطأ أثناء إضافة الموظف" };
+  }
 }
 
 export async function updateEmployee(formData: FormData) {
