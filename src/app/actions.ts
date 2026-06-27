@@ -4,11 +4,14 @@ import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
 function calculateHours(checkIn: Date, checkOut: Date) {
+  // Use UTC to represent 9 AM and 6 PM in Iraq (+03:00) 
+  // 9 AM Iraq time = 6 AM UTC
+  // 6 PM Iraq time = 3 PM UTC
   const officialStart = new Date(checkIn);
-  officialStart.setHours(9, 0, 0, 0);
+  officialStart.setUTCHours(6, 0, 0, 0);
 
   const officialEnd = new Date(checkIn);
-  officialEnd.setHours(18, 0, 0, 0);
+  officialEnd.setUTCHours(15, 0, 0, 0);
 
   let officialMs = 0;
   let overtimeMs = 0;
@@ -66,8 +69,8 @@ export async function addBulkAttendance(formData: FormData) {
 
   let currentDate = new Date(startDate);
   // Remove time part to avoid daylight saving issues during iteration
-  currentDate.setHours(0,0,0,0);
-  endDate.setHours(0,0,0,0);
+  currentDate.setUTCHours(0,0,0,0);
+  endDate.setUTCHours(0,0,0,0);
 
   while (currentDate <= endDate) {
     if (skipFridays && currentDate.getDay() === 5) {
@@ -76,10 +79,10 @@ export async function addBulkAttendance(formData: FormData) {
     }
 
     const checkIn = new Date(currentDate);
-    checkIn.setHours(9, 0, 0, 0);
+    checkIn.setUTCHours(6, 0, 0, 0); // 9 AM Iraq time
 
     const checkOut = new Date(currentDate);
-    checkOut.setHours(18, 0, 0, 0);
+    checkOut.setUTCHours(15, 0, 0, 0); // 6 PM Iraq time
 
     const { officialHours, overtimeHours } = calculateHours(checkIn, checkOut);
 
@@ -112,8 +115,9 @@ export async function updateAttendance(formData: FormData) {
     throw new Error("جميع الحقول مطلوبة");
   }
 
-  const checkIn = new Date(checkInStr);
-  const checkOut = new Date(checkOutStr);
+  // Force Iraq timezone (+03:00) so the parsed time matches what the user typed locally
+  const checkIn = new Date(checkInStr + "+03:00");
+  const checkOut = new Date(checkOutStr + "+03:00");
 
   if (checkOut <= checkIn) {
     throw new Error("وقت الخروج يجب أن يكون بعد وقت الدخول");
