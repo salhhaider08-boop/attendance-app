@@ -30,7 +30,7 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
         <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '8px' }}>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>الراتب الاسمي</p>
-          <h3 style={{ fontSize: '1.5rem' }}>{payrollData.basicSalary.toLocaleString()} د.ع</h3>
+          <h3 style={{ fontSize: '1.5rem' }}>{payrollData.basicSalary.toLocaleString('en-US', {numberingSystem: 'latn'})} د.ع</h3>
         </div>
         <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '8px' }}>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>أيام الشهر (بدون الجمعة)</p>
@@ -38,11 +38,11 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
         </div>
         <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '8px' }}>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>سعر الساعة الرسمي</p>
-          <h3 style={{ fontSize: '1.5rem' }}>{payrollData.hourlyRate.toLocaleString(undefined, {maximumFractionDigits: 2})} د.ع</h3>
+          <h3 style={{ fontSize: '1.5rem' }}>{payrollData.hourlyRate.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</h3>
         </div>
         <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '8px' }}>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>سعر الساعة الإضافي</p>
-          <h3 style={{ fontSize: '1.5rem' }}>{payrollData.overtimeRate.toLocaleString(undefined, {maximumFractionDigits: 2})} د.ع</h3>
+          <h3 style={{ fontSize: '1.5rem' }}>{payrollData.overtimeRate.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</h3>
         </div>
       </div>
 
@@ -80,20 +80,20 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
       <table className="table" style={{ marginBottom: '1.5rem' }}>
         <tbody>
           <tr style={{ opacity: activeView === 'all' || activeView === 'official' ? 1 : 0.3 }}>
-            <td>ساعات الدوام الرسمية المستحقة ({payrollData.totalOfficialHours} س)</td>
-            <td style={{ fontWeight: 'bold' }}>{payrollData.officialPay.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</td>
+            <td>ساعات الدوام الرسمية المستحقة ({payrollData.totalOfficialHours.toLocaleString('en-US', {maximumFractionDigits: 1, numberingSystem: 'latn'})} س)</td>
+            <td style={{ fontWeight: 'bold' }}>{payrollData.officialPay.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</td>
           </tr>
           <tr style={{ opacity: activeView === 'all' || activeView === 'overtime' ? 1 : 0.3 }}>
-            <td>الساعات الإضافية ({payrollData.totalOvertimeHours} س)</td>
-            <td style={{ fontWeight: 'bold', color: 'var(--success)' }}>+ {payrollData.overtimePay.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</td>
+            <td>الساعات الإضافية ({payrollData.totalOvertimeHours.toLocaleString('en-US', {maximumFractionDigits: 1, numberingSystem: 'latn'})} س)</td>
+            <td style={{ fontWeight: 'bold', color: 'var(--success)' }}>+ {payrollData.overtimePay.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</td>
           </tr>
           <tr style={{ opacity: activeView === 'all' || activeView === 'overtime' ? 1 : 0.3 }}>
-            <td>دوام الجمعة ({payrollData.totalFridayHours} س)</td>
-            <td style={{ fontWeight: 'bold', color: 'var(--success)' }}>+ {payrollData.fridayPay.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</td>
+            <td>دوام الجمعة ({payrollData.totalFridayHours.toLocaleString('en-US', {maximumFractionDigits: 1, numberingSystem: 'latn'})} س)</td>
+            <td style={{ fontWeight: 'bold', color: 'var(--success)' }}>+ {payrollData.fridayPay.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</td>
           </tr>
           <tr style={{ opacity: activeView === 'all' || activeView === 'allowance' ? 1 : 0.3 }}>
             <td>مخصصات مستحقة ({payrollData.attendedNonFridays} يوم حضور)</td>
-            <td style={{ fontWeight: 'bold', color: 'var(--success)' }}>+ {payrollData.allowanceEarned.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</td>
+            <td style={{ fontWeight: 'bold', color: 'var(--success)' }}>+ {payrollData.allowanceEarned.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</td>
           </tr>
           {payrollData.previousDues > 0 && activeView === 'all' && (
             <tr style={{ background: 'rgba(255, 68, 68, 0.1)' }}>
@@ -103,13 +103,13 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
                   عن أشهر: {payrollData.unpaidMonthsList.join(' , ')}
                 </div>
               </td>
-              <td style={{ fontWeight: 'bold', color: 'var(--danger)' }}>+ {payrollData.previousDues.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</td>
+              <td style={{ fontWeight: 'bold', color: 'var(--danger)' }}>+ {payrollData.previousDues.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</td>
             </tr>
           )}
           {payrollData.advances > 0 && activeView === 'all' && (
             <tr style={{ background: 'rgba(239, 68, 68, 0.1)' }}>
               <td>السلف المسحوبة (مستقطعة)</td>
-              <td style={{ fontWeight: 'bold', color: 'var(--danger)' }}>- {payrollData.advances.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</td>
+              <td style={{ fontWeight: 'bold', color: 'var(--danger)' }}>- {payrollData.advances.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</td>
             </tr>
           )}
         </tbody>
@@ -121,7 +121,7 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
           {activeView === 'all' && payrollData.isPaid && " (تم التسليم ✓)"}
         </p>
         <h1 style={{ fontSize: '3rem', margin: 0, color: activeView === 'all' ? 'white' : 'var(--primary)' }}>
-          {displayValue.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع
+          {displayValue.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع
         </h1>
       </div>
 
@@ -284,16 +284,16 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
         
         <div className="print-salary-box">
           <div className="print-salary-title">الراتب الكلي المستحق</div>
-          <div className="print-salary-amount">{payrollData.finalSalary.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</div>
+          <div className="print-salary-amount">{payrollData.finalSalary.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</div>
           <div>
             {payrollData.previousDues > 0 && (
               <div className="print-dues">
-                + ديون سابقة للأشهر ({payrollData.unpaidMonthsList.join(' , ')}): {payrollData.previousDues.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع
+                + ديون سابقة للأشهر ({payrollData.unpaidMonthsList.join(' , ')}): {payrollData.previousDues.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع
               </div>
             )}
             {payrollData.advances > 0 && (
               <div className="print-advances">
-                - السلف المسحوبة: {payrollData.advances.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع
+                - السلف المسحوبة: {payrollData.advances.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع
               </div>
             )}
           </div>
@@ -301,27 +301,27 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
 
         <div className="print-row">
           <span>النقل والطعام:</span>
-          <span className="print-bold">{payrollData.allowanceEarned.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</span>
+          <span className="print-bold">{payrollData.allowanceEarned.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</span>
         </div>
         
         <div className="print-row">
           <span>الساعات الإضافية والجمعة:</span>
-          <span className="print-bold">{(payrollData.overtimePay + payrollData.fridayPay).toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</span>
+          <span className="print-bold">{(payrollData.overtimePay + payrollData.fridayPay).toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</span>
         </div>
 
         <div className="print-row">
           <span>سعر الساعة العادية:</span>
-          <span className="print-bold">{payrollData.hourlyRate.toLocaleString(undefined, {maximumFractionDigits: 2})} د.ع</span>
+          <span className="print-bold">{payrollData.hourlyRate.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</span>
         </div>
 
         <div className="print-row">
           <span>عدد الساعات العادية:</span>
-          <span className="print-bold">{payrollData.totalOfficialHours.toLocaleString(undefined, {maximumFractionDigits: 1})} ساعة</span>
+          <span className="print-bold">{payrollData.totalOfficialHours.toLocaleString('en-US', {maximumFractionDigits: 1, minimumFractionDigits: 0, numberingSystem: 'latn'})} ساعة</span>
         </div>
 
         <div className="print-row" style={{ borderBottom: 'none' }}>
           <span>عدد الساعات الإضافية والجمعة:</span>
-          <span className="print-bold">{(payrollData.totalOvertimeHours + payrollData.totalFridayHours).toLocaleString(undefined, {maximumFractionDigits: 1})} ساعة</span>
+          <span className="print-bold">{(payrollData.totalOvertimeHours + payrollData.totalFridayHours).toLocaleString('en-US', {maximumFractionDigits: 1, minimumFractionDigits: 0, numberingSystem: 'latn'})} ساعة</span>
         </div>
       </div>
     </div>

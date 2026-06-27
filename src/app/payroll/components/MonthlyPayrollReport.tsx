@@ -38,19 +38,19 @@ export default function MonthlyPayrollReport({ payrollDataList, monthStr }: { pa
             <tr key={data.employeeId}>
               <td>{index + 1}</td>
               <td style={{ fontWeight: 'bold' }}>{data.employeeName}</td>
-              <td>{data.basicSalary.toLocaleString()}</td>
+              <td>{data.basicSalary.toLocaleString('en-US', {numberingSystem: 'latn'})}</td>
               <td style={{ fontSize: '0.9rem' }}>
                 <span style={{ color: 'var(--success)' }}>{data.totalOfficialHours} س</span> / <span style={{ color: 'var(--danger)' }}>{(data.totalOvertimeHours + data.totalFridayHours)} س</span>
               </td>
-              <td>{data.allowanceEarned.toLocaleString()}</td>
+              <td>{data.allowanceEarned.toLocaleString('en-US', {numberingSystem: 'latn'})}</td>
               <td style={{ color: data.previousDues > 0 ? 'var(--danger)' : 'var(--text-muted)' }}>
-                {data.previousDues > 0 ? `+ ${data.previousDues.toLocaleString()}` : '-'}
+                {data.previousDues > 0 ? `+ ${data.previousDues.toLocaleString('en-US', {numberingSystem: 'latn'})}` : '-'}
               </td>
               <td style={{ color: data.advances > 0 ? 'var(--danger)' : 'var(--text-muted)' }}>
-                {data.advances > 0 ? `- ${data.advances.toLocaleString()}` : '-'}
+                {data.advances > 0 ? `- ${data.advances.toLocaleString('en-US', {numberingSystem: 'latn'})}` : '-'}
               </td>
               <td style={{ fontWeight: 'bold', color: 'var(--primary)', fontSize: '1.1rem' }}>
-                {data.finalSalary.toLocaleString()} د.ع
+                {data.finalSalary.toLocaleString('en-US', {numberingSystem: 'latn'})} د.ع
               </td>
             </tr>
           ))}
@@ -67,7 +67,7 @@ export default function MonthlyPayrollReport({ payrollDataList, monthStr }: { pa
                 المجموع الكلي للرواتب:
               </td>
               <td style={{ fontWeight: 'bold', fontSize: '1.4rem', color: 'var(--primary)' }}>
-                {totalSalaries.toLocaleString()} د.ع
+                {totalSalaries.toLocaleString('en-US', {numberingSystem: 'latn'})} د.ع
               </td>
             </tr>
           </tfoot>

@@ -107,7 +107,7 @@ export default async function Home(props: { searchParams: Promise<{ employeeId?:
                 مجموع الرواتب المستحقة {filterEmployeeId ? 'للموظف المختار' : 'لجميع الموظفين'} (بناءً على الحضور لشهر {filterMonthStr})
               </p>
               <h3 style={{ color: 'var(--success)', fontSize: '2rem', margin: 0 }}>
-                {totalSalariesCalculated.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع
+                {totalSalariesCalculated.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع
               </h3>
             </div>
           )}

@@ -35,8 +35,8 @@ export default function EmployeeTable({ employees }: { employees: Employee[] }) 
               <tr key={emp.id}>
                 <td>{emp.id}</td>
                 <td style={{ fontWeight: 500 }}>{emp.name}</td>
-                <td>{emp.basicSalary.toLocaleString('en-GB')} د.ع</td>
-                <td>{emp.allowance.toLocaleString('en-GB')} د.ع</td>
+                <td>{emp.basicSalary.toLocaleString('en-US', {numberingSystem: 'latn'})} د.ع</td>
+                <td>{emp.allowance.toLocaleString('en-US', {numberingSystem: 'latn'})} د.ع</td>
                 <td style={{ display: 'flex', gap: '0.5rem' }}>
                   <button 
                     className="btn btn-primary" 
