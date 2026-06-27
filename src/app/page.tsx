@@ -3,6 +3,8 @@ import { addBulkAttendance } from "./actions"
 import AttendanceTable from "./components/AttendanceTable"
 import ExportButton from "./components/ExportButton"
 
+import { calculateMonthSalary } from "@/lib/payrollCalculator"
+
 export default async function Home(props: { searchParams: Promise<{ employeeId?: string, month?: string }> }) {
   const searchParams = await props.searchParams;
   
@@ -32,6 +34,20 @@ export default async function Home(props: { searchParams: Promise<{ employeeId?:
     where: whereClause,
     orderBy: { date: 'desc' }
   });
+
+  // Calculate total salaries for the filtered view
+  let totalSalariesCalculated = 0;
+  if (filterMonthStr) {
+    const [year, month] = filterMonthStr.split('-').map(Number);
+    const targetEmployees = filterEmployeeId 
+      ? employees.filter(e => e.id === filterEmployeeId) 
+      : employees;
+      
+    for (const emp of targetEmployees) {
+       const calc = await calculateMonthSalary(emp, year, month);
+       totalSalariesCalculated += calc.finalSalary;
+    }
+  }
 
   return (
     <main className="container">
@@ -101,6 +117,17 @@ export default async function Home(props: { searchParams: Promise<{ employeeId?:
 
             <ExportButton />
           </div>
+
+          {filterMonthStr && (
+            <div style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(52, 211, 153, 0.1))', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '1.5rem', borderRadius: '12px', marginBottom: '1.5rem', textAlign: 'center' }}>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '0.5rem', fontSize: '1.1rem' }}>
+                مجموع الرواتب المستحقة {filterEmployeeId ? 'للموظف المختار' : 'لجميع الموظفين'} (بناءً على الحضور لشهر {filterMonthStr})
+              </p>
+              <h3 style={{ color: 'var(--success)', fontSize: '2rem', margin: 0 }}>
+                {totalSalariesCalculated.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع
+              </h3>
+            </div>
+          )}
 
           <AttendanceTable records={records} />
         </div>
