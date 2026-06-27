@@ -58,9 +58,9 @@ export default function AttendanceTable({ records }: { records: Record[] }) {
                     </span>
                   ) : '-'}
                 </td>
-                <td>{record.officialHours?.toFixed(2)} س</td>
+                <td>{record.officialHours?.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} س</td>
                 <td style={{ color: record.overtimeHours && record.overtimeHours > 0 ? 'var(--danger)' : 'inherit' }}>
-                  {record.overtimeHours?.toFixed(2)} س
+                  {record.overtimeHours?.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} س
                 </td>
                 <td style={{ display: 'flex', gap: '0.5rem' }}>
                   <button 

@@ -38,11 +38,11 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
         </div>
         <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '8px' }}>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>سعر الساعة الرسمي</p>
-          <h3 style={{ fontSize: '1.5rem' }}>{payrollData.hourlyRate.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</h3>
+          <h3 style={{ fontSize: '1.5rem' }}>{payrollData.hourlyRate.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</h3>
         </div>
         <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '8px' }}>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>سعر الساعة الإضافي</p>
-          <h3 style={{ fontSize: '1.5rem' }}>{payrollData.overtimeRate.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</h3>
+          <h3 style={{ fontSize: '1.5rem' }}>{payrollData.overtimeRate.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</h3>
         </div>
       </div>
 
@@ -80,15 +80,15 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
       <table className="table" style={{ marginBottom: '1.5rem' }}>
         <tbody>
           <tr style={{ opacity: activeView === 'all' || activeView === 'official' ? 1 : 0.3 }}>
-            <td>ساعات الدوام الرسمية المستحقة ({payrollData.totalOfficialHours.toLocaleString('en-US', {maximumFractionDigits: 1, numberingSystem: 'latn'})} س)</td>
+            <td>ساعات الدوام الرسمية المستحقة ({payrollData.totalOfficialHours.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} س)</td>
             <td style={{ fontWeight: 'bold' }}>{payrollData.officialPay.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</td>
           </tr>
           <tr style={{ opacity: activeView === 'all' || activeView === 'overtime' ? 1 : 0.3 }}>
-            <td>الساعات الإضافية ({payrollData.totalOvertimeHours.toLocaleString('en-US', {maximumFractionDigits: 1, numberingSystem: 'latn'})} س)</td>
+            <td>الساعات الإضافية ({payrollData.totalOvertimeHours.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} س)</td>
             <td style={{ fontWeight: 'bold', color: 'var(--success)' }}>+ {payrollData.overtimePay.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</td>
           </tr>
           <tr style={{ opacity: activeView === 'all' || activeView === 'overtime' ? 1 : 0.3 }}>
-            <td>دوام الجمعة ({payrollData.totalFridayHours.toLocaleString('en-US', {maximumFractionDigits: 1, numberingSystem: 'latn'})} س)</td>
+            <td>دوام الجمعة ({payrollData.totalFridayHours.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} س)</td>
             <td style={{ fontWeight: 'bold', color: 'var(--success)' }}>+ {payrollData.fridayPay.toLocaleString('en-US', {maximumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</td>
           </tr>
           <tr style={{ opacity: activeView === 'all' || activeView === 'allowance' ? 1 : 0.3 }}>
@@ -311,17 +311,17 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
 
         <div className="print-row">
           <span>سعر الساعة العادية:</span>
-          <span className="print-bold">{payrollData.hourlyRate.toLocaleString('en-US', {maximumFractionDigits: 2, minimumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</span>
+          <span className="print-bold">{payrollData.hourlyRate.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0, numberingSystem: 'latn'})} د.ع</span>
         </div>
 
         <div className="print-row">
           <span>عدد الساعات العادية:</span>
-          <span className="print-bold">{payrollData.totalOfficialHours.toLocaleString('en-US', {maximumFractionDigits: 1, minimumFractionDigits: 0, numberingSystem: 'latn'})} ساعة</span>
+          <span className="print-bold">{payrollData.totalOfficialHours.toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0, numberingSystem: 'latn'})} ساعة</span>
         </div>
 
         <div className="print-row" style={{ borderBottom: 'none' }}>
           <span>عدد الساعات الإضافية والجمعة:</span>
-          <span className="print-bold">{(payrollData.totalOvertimeHours + payrollData.totalFridayHours).toLocaleString('en-US', {maximumFractionDigits: 1, minimumFractionDigits: 0, numberingSystem: 'latn'})} ساعة</span>
+          <span className="print-bold">{(payrollData.totalOvertimeHours + payrollData.totalFridayHours).toLocaleString('en-US', {maximumFractionDigits: 0, minimumFractionDigits: 0, numberingSystem: 'latn'})} ساعة</span>
         </div>
       </div>
     </div>
