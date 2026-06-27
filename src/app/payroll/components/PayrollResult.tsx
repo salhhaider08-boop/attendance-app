@@ -146,7 +146,7 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
       <style>{`
         @media print {
           @page {
-            size: A5 portrait;
+            size: A4 landscape;
             margin: 1cm;
           }
           
@@ -186,8 +186,8 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
 
           .print-container {
             display: block !important;
-            width: 100%;
-            padding: 10px;
+            width: 50%;
+            padding: 20px;
             direction: rtl;
             background: white;
             font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
