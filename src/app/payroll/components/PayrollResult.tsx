@@ -152,7 +152,7 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
       <style>{`
         @media print {
           @page {
-            size: A4 landscape;
+            size: A4 portrait;
             margin: 1cm;
           }
           
@@ -192,7 +192,7 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
 
           .print-container {
             display: block !important;
-            width: 50%;
+            width: 100%;
             padding: 20px;
             direction: rtl;
             background: white;
