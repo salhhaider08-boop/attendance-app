@@ -45,16 +45,16 @@ export default function AttendanceTable({ records }: { records: Record[] }) {
             ) : records.map((record) => (
               <tr key={record.id}>
                 <td style={{ fontWeight: 500 }}>{record.employeeName}</td>
-                <td>{new Date(record.date).toLocaleDateString('ar-EG')}</td>
+                <td>{new Date(record.date).toLocaleDateString('en-GB')}</td>
                 <td>
                   <span className="badge badge-success">
-                    {new Date(record.checkIn).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}
+                    {new Date(record.checkIn).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </td>
                 <td>
                   {record.checkOut ? (
                     <span className="badge badge-warning">
-                      {new Date(record.checkOut).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}
+                      {new Date(record.checkOut).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   ) : '-'}
                 </td>
@@ -86,7 +86,7 @@ export default function AttendanceTable({ records }: { records: Record[] }) {
           <div className="modal-content glass-card">
             <h3 style={{ marginBottom: '1.5rem', color: 'var(--primary)' }}>تعديل سجل الحضور</h3>
             <p style={{ marginBottom: '1rem', color: 'var(--text-muted)' }}>
-              يوم: {new Date(editingRecord.date).toLocaleDateString('ar-EG')} - الموظف: {editingRecord.employeeName}
+              يوم: {new Date(editingRecord.date).toLocaleDateString('en-GB')} - الموظف: {editingRecord.employeeName}
             </p>
             <form action={(formData) => {
               updateAttendance(formData);

@@ -160,9 +160,9 @@ export async function syncWithGoogleSheets() {
       data.push([
         record.id.toString(),
         record.employeeName,
-        new Date(record.date).toLocaleDateString('ar-EG'),
-        new Date(record.checkIn).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }),
-        record.checkOut ? new Date(record.checkOut).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }) : '-',
+        new Date(record.date).toLocaleDateString('en-GB'),
+        new Date(record.checkIn).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
+        record.checkOut ? new Date(record.checkOut).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '-',
         record.officialHours ? record.officialHours.toFixed(2) : '0',
         record.overtimeHours ? record.overtimeHours.toFixed(2) : '0'
       ]);
