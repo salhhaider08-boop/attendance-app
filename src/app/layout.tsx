@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" dir="rtl">
+    <html lang="ar" dir="rtl" className="notranslate" translate="no">
       <body>
         <nav style={{ position: 'sticky', top: 0, zIndex: 1000, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', padding: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', display: 'flex', gap: '2rem', justifyContent: 'center', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.5)' }}>
           <a href="/" style={{ color: 'var(--text-main)', textDecoration: 'none', fontWeight: 'bold' }}>الحضور والانصراف</a>
