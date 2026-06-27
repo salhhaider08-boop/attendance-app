@@ -145,21 +145,47 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
       {/* Print Only Section */}
       <style>{`
         @media print {
-          body * {
-            visibility: hidden;
+          /* Hide main app elements */
+          .header, nav, .grid > div:first-child {
+            display: none !important;
           }
-          .print-container, .print-container * {
-            visibility: visible;
+          
+          /* Reset body and wrappers */
+          body {
+            background: white !important;
+            padding: 0 !important;
+            margin: 0 !important;
           }
+          .container, .grid {
+            padding: 0 !important;
+            margin: 0 !important;
+            display: block !important;
+          }
+          
+          /* Reset the PayrollResult card to be invisible container */
+          .glass-card {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+          }
+          
+          /* Hide everything inside PayrollResult EXCEPT the print-container */
+          .glass-card > h2,
+          .glass-card > div:not(.print-container),
+          .glass-card > table,
+          .glass-card > form {
+            display: none !important;
+          }
+
           .print-container {
-            position: absolute;
-            left: 0;
-            top: 0;
+            display: block !important;
             width: 100%;
-            padding: 30px 40px;
+            padding: 20px;
             direction: rtl;
-            background: #f8fafc;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
           }
@@ -188,12 +214,11 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
           }
           .print-salary-box {
             background: linear-gradient(135deg, rgba(239, 246, 255, 0.9), rgba(219, 234, 254, 0.8));
-            border: 1px solid rgba(147, 197, 253, 0.5);
+            border: 2px solid #93c5fd;
             border-radius: 16px;
             padding: 25px;
             margin: 30px 0;
             text-align: center;
-            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.15), 0 8px 10px -6px rgba(37, 99, 235, 0.1);
           }
           .print-salary-title {
             font-size: 20px;
@@ -205,12 +230,11 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
             font-size: 46px;
             font-weight: 900;
             color: #1d4ed8;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             margin: 0;
           }
           .print-dues {
-            background: rgba(254, 226, 226, 0.8);
-            border: 1px solid rgba(252, 165, 165, 0.8);
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
             border-radius: 8px;
             padding: 10px 15px;
             margin-top: 15px;
