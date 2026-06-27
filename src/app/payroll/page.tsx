@@ -8,6 +8,7 @@ export default async function PayrollPage(props: { searchParams: Promise<{ emplo
 
   const employeeId = searchParams.employeeId ? parseInt(searchParams.employeeId) : null;
   const monthStr = searchParams.month; // format "YYYY-MM"
+  const advances = searchParams.advances ? parseFloat(searchParams.advances) : 0;
 
   let payrollData = null;
 
@@ -82,7 +83,7 @@ export default async function PayrollPage(props: { searchParams: Promise<{ emplo
         }
       }
 
-      const finalSalary = currentMonthSalary + previousDues;
+      const finalSalary = currentMonthSalary + previousDues - advances;
 
       payrollData = {
         employeeId: employee.id,
@@ -105,6 +106,7 @@ export default async function PayrollPage(props: { searchParams: Promise<{ emplo
         currentMonthSalary,
         previousDues,
         unpaidMonthsList,
+        advances,
         finalSalary,
         isPaid
       };
@@ -135,6 +137,11 @@ export default async function PayrollPage(props: { searchParams: Promise<{ emplo
             <div className="form-group">
               <label htmlFor="month">الشهر</label>
               <input type="month" id="month" name="month" className="form-control" defaultValue={monthStr || ""} required />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="advances">السلف المسحوبة (إن وجدت)</label>
+              <input type="number" id="advances" name="advances" className="form-control" defaultValue={advances || ""} placeholder="أدخل مبلغ السلف (د.ع)" />
             </div>
 
             <button type="submit" className="btn btn-primary" disabled={employees.length === 0}>

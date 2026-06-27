@@ -106,6 +106,12 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
               <td style={{ fontWeight: 'bold', color: 'var(--danger)' }}>+ {payrollData.previousDues.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</td>
             </tr>
           )}
+          {payrollData.advances > 0 && activeView === 'all' && (
+            <tr style={{ background: 'rgba(239, 68, 68, 0.1)' }}>
+              <td>السلف المسحوبة (مستقطعة)</td>
+              <td style={{ fontWeight: 'bold', color: 'var(--danger)' }}>- {payrollData.advances.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</td>
+            </tr>
+          )}
         </tbody>
       </table>
 
@@ -248,6 +254,18 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
             font-weight: bold;
             font-size: 18px;
           }
+          .print-advances {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-top: 15px;
+            display: inline-block;
+            color: #b91c1c;
+            font-weight: bold;
+            font-size: 18px;
+            margin-right: 10px;
+          }
         }
         @media screen {
           .print-container {
@@ -267,11 +285,18 @@ export default function PayrollResult({ payrollData }: { payrollData: any }) {
         <div className="print-salary-box">
           <div className="print-salary-title">الراتب الكلي المستحق</div>
           <div className="print-salary-amount">{payrollData.finalSalary.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع</div>
-          {payrollData.previousDues > 0 && (
-            <div className="print-dues">
-              + ديون سابقة للأشهر ({payrollData.unpaidMonthsList.join(' , ')}): {payrollData.previousDues.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع
-            </div>
-          )}
+          <div>
+            {payrollData.previousDues > 0 && (
+              <div className="print-dues">
+                + ديون سابقة للأشهر ({payrollData.unpaidMonthsList.join(' , ')}): {payrollData.previousDues.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع
+              </div>
+            )}
+            {payrollData.advances > 0 && (
+              <div className="print-advances">
+                - السلف المسحوبة: {payrollData.advances.toLocaleString(undefined, {maximumFractionDigits: 0})} د.ع
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="print-row">
